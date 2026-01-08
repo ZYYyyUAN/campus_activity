@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.activity.mapper.SignScoreMapper">
+    
+    <resultMap id="SignScoreResultMap" type="com.campus.activity.entity.SignScore">
+        <id column="sign_id" property="signId"/>
+        <result column="activity_id" property="activityId"/>
+        <result column="user_id" property="userId"/>
+        <result column="sign_time" property="signTime"/>
+        <result column="score" property="score"/>
+        <result column="activity_name" property="activityName"/>
+        <result column="username" property="userName"/>
+        <result column="real_name" property="realName"/>
+    </resultMap>
+    
+    <select id="selectById" parameterType="int" resultMap="SignScoreResultMap">
+        SELECT s.*, a.activity_name, u.username, u.real_name 
+        FROM Sign_Score s
+        LEFT JOIN Activity a ON s.activity_id = a.activity_id
+        LEFT JOIN User u ON s.user_id = u.user_id
+        WHERE s.sign_id = #{signId}
+    </select>
+    
+    <select id="selectByActivityId" parameterType="int" resultMap="SignScoreResultMap">
+        SELECT s.*, a.activity_name, u.username, u.real_name 
+        FROM Sign_Score s
+        LEFT JOIN Activity a ON s.activity_id = a.activity_id
+        LEFT JOIN User u ON s.user_id = u.user_id
+        WHERE s.activity_id = #{activityId}
+        ORDER BY s.sign_time DESC
+    </select>
+    
+    <select id="selectByUserId" parameterType="int" resultMap="SignScoreResultMap">
+        SELECT s.*, a.activity_name, u.username, u.real_name 
+        FROM Sign_Score s
+        LEFT JOIN Activity a ON s.activity_id = a.activity_id
+        LEFT JOIN User u ON s.user_id = u.user_id
+        WHERE s.user_id = #{userId}
+        ORDER BY s.sign_time DESC
+    </select>
+    
+    <select id="selectByActivityAndUser" resultMap="SignScoreResultMap">
+        SELECT s.*, a.activity_name, u.username, u.real_name 
+        FROM Sign_Score s
+        LEFT JOIN Activity a ON s.activity_id = a.activity_id
+        LEFT JOIN User u ON s.user_id = u.user_id
+        WHERE s.activity_id = #{activityId} AND s.user_id = #{userId}
+    </select>
+    
+    <select id="countByActivityId" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM Sign_Score WHERE activity_id = #{activityId}
+    </select>
+    
+    <select id="sumScoreByUserId" parameterType="int" resultType="Integer">
+        SELECT COALESCE(SUM(score), 0) FROM Sign_Score WHERE user_id = #{userId}
+    </select>
+    
+    <insert id="insert" parameterType="com.campus.activity.entity.SignScore" 
+            useGeneratedKeys="true" keyProperty="signId">
+        INSERT INTO Sign_Score(activity_id, user_id, sign_time, score)
+        VALUES(#{activityId}, #{userId}, NOW(), #{score})
+    </insert>
+    
+</mapper>
+

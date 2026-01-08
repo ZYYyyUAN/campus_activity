@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.activity.mapper.EvaluationMapper">
+    
+    <resultMap id="EvaluationResultMap" type="com.campus.activity.entity.Evaluation">
+        <id column="eval_id" property="evalId"/>
+        <result column="activity_id" property="activityId"/>
+        <result column="user_id" property="userId"/>
+        <result column="rating" property="rating"/>
+        <result column="content" property="content"/>
+        <result column="eval_time" property="evalTime"/>
+        <result column="activity_name" property="activityName"/>
+        <result column="username" property="userName"/>
+        <result column="real_name" property="realName"/>
+    </resultMap>
+    
+    <select id="selectById" parameterType="int" resultMap="EvaluationResultMap">
+        SELECT e.*, a.activity_name, u.username, u.real_name 
+        FROM Evaluation e
+        LEFT JOIN Activity a ON e.activity_id = a.activity_id
+        LEFT JOIN User u ON e.user_id = u.user_id
+        WHERE e.eval_id = #{evalId}
+    </select>
+    
+    <select id="selectByActivityId" parameterType="int" resultMap="EvaluationResultMap">
+        SELECT e.*, a.activity_name, u.username, u.real_name 
+        FROM Evaluation e
+        LEFT JOIN Activity a ON e.activity_id = a.activity_id
+        LEFT JOIN User u ON e.user_id = u.user_id
+        WHERE e.activity_id = #{activityId}
+        ORDER BY e.eval_time DESC
+    </select>
+    
+    <select id="selectByUserId" parameterType="int" resultMap="EvaluationResultMap">
+        SELECT e.*, a.activity_name, u.username, u.real_name 
+        FROM Evaluation e
+        LEFT JOIN Activity a ON e.activity_id = a.activity_id
+        LEFT JOIN User u ON e.user_id = u.user_id
+        WHERE e.user_id = #{userId}
+        ORDER BY e.eval_time DESC
+    </select>
+    
+    <select id="selectByActivityAndUser" resultMap="EvaluationResultMap">
+        SELECT e.*, a.activity_name, u.username, u.real_name 
+        FROM Evaluation e
+        LEFT JOIN Activity a ON e.activity_id = a.activity_id
+        LEFT JOIN User u ON e.user_id = u.user_id
+        WHERE e.activity_id = #{activityId} AND e.user_id = #{userId}
+    </select>
+    
+    <select id="selectByKeyword" parameterType="string" resultMap="EvaluationResultMap">
+        SELECT e.*, a.activity_name, u.username, u.real_name 
+        FROM Evaluation e
+        LEFT JOIN Activity a ON e.activity_id = a.activity_id
+        LEFT JOIN User u ON e.user_id = u.user_id
+        WHERE e.content LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY e.eval_time DESC
+    </select>
+    
+    <insert id="insert" parameterType="com.campus.activity.entity.Evaluation" 
+            useGeneratedKeys="true" keyProperty="evalId">
+        INSERT INTO Evaluation(activity_id, user_id, rating, content, eval_time)
+        VALUES(#{activityId}, #{userId}, #{rating}, #{content}, NOW())
+    </insert>
+    
+    <update id="update" parameterType="com.campus.activity.entity.Evaluation">
+        UPDATE Evaluation
+        <set>
+            <if test="rating != null">rating = #{rating},</if>
+            <if test="content != null">content = #{content}</if>
+        </set>
+        WHERE eval_id = #{evalId}
+    </update>
+    
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM Evaluation WHERE eval_id = #{evalId}
+    </delete>
+    
+</mapper>
+

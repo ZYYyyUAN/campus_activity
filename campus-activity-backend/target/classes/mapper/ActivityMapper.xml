@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.activity.mapper.ActivityMapper">
+    
+    <resultMap id="ActivityResultMap" type="com.campus.activity.entity.Activity">
+        <id column="activity_id" property="activityId"/>
+        <result column="activity_name" property="activityName"/>
+        <result column="activity_type" property="activityType"/>
+        <result column="location" property="location"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="max_people" property="maxPeople"/>
+        <result column="publisher_id" property="publisherId"/>
+        <result column="status" property="status"/>
+        <result column="real_name" property="publisherName"/>
+    </resultMap>
+    
+    <select id="selectById" parameterType="int" resultMap="ActivityResultMap">
+        SELECT a.*, u.real_name 
+        FROM Activity a 
+        LEFT JOIN User u ON a.publisher_id = u.user_id
+        WHERE a.activity_id = #{activityId}
+    </select>
+    
+    <select id="selectAll" resultMap="ActivityResultMap">
+        SELECT a.*, u.real_name 
+        FROM Activity a 
+        LEFT JOIN User u ON a.publisher_id = u.user_id
+        ORDER BY a.start_time DESC
+    </select>
+    
+    <select id="selectByPublisherId" parameterType="int" resultMap="ActivityResultMap">
+        SELECT a.*, u.real_name 
+        FROM Activity a 
+        LEFT JOIN User u ON a.publisher_id = u.user_id
+        WHERE a.publisher_id = #{publisherId}
+        ORDER BY a.start_time DESC
+    </select>
+    
+    <select id="selectByConditions" resultMap="ActivityResultMap">
+        SELECT a.*, u.real_name 
+        FROM Activity a 
+        LEFT JOIN User u ON a.publisher_id = u.user_id
+        <where>
+            <if test="activityType != null and activityType != ''">
+                AND a.activity_type = #{activityType}
+            </if>
+            <if test="startTime != null">
+                AND a.start_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND a.end_time &lt;= #{endTime}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (a.activity_name LIKE CONCAT('%', #{keyword}, '%') 
+                     OR a.location LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="publisherId != null">
+                AND a.publisher_id = #{publisherId}
+            </if>
+        </where>
+        ORDER BY a.start_time DESC
+    </select>
+    
+    <insert id="insert" parameterType="com.campus.activity.entity.Activity" useGeneratedKeys="true" keyProperty="activityId">
+        INSERT INTO Activity(activity_name, activity_type, location, start_time, end_time, max_people, publisher_id, status)
+        VALUES(#{activityName}, #{activityType}, #{location}, #{startTime}, #{endTime}, #{maxPeople}, #{publisherId}, #{status})
+    </insert>
+    
+    <update id="update" parameterType="com.campus.activity.entity.Activity">
+        UPDATE Activity
+        <set>
+            <if test="activityName != null">activity_name = #{activityName},</if>
+            <if test="activityType != null">activity_type = #{activityType},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="maxPeople != null">max_people = #{maxPeople},</if>
+            <if test="status != null">status = #{status}</if>
+        </set>
+        WHERE activity_id = #{activityId}
+    </update>
+    
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM Activity WHERE activity_id = #{activityId}
+    </delete>
+    
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM Activity
+    </select>
+    
+</mapper>
+

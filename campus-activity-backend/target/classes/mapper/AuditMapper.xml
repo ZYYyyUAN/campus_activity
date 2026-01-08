@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.activity.mapper.AuditMapper">
+    
+    <resultMap id="AuditResultMap" type="com.campus.activity.entity.Audit">
+        <id column="audit_id" property="auditId"/>
+        <result column="register_id" property="registerId"/>
+        <result column="auditor_id" property="auditorId"/>
+        <result column="audit_result" property="auditResult"/>
+        <result column="audit_time" property="auditTime"/>
+        <result column="audit_comment" property="auditComment"/>
+        <result column="auditor_name" property="auditorName"/>
+        <result column="student_name" property="studentName"/>
+        <result column="activity_name" property="activityName"/>
+    </resultMap>
+    
+    <select id="selectById" parameterType="int" resultMap="AuditResultMap">
+        SELECT a.*, 
+               au.real_name AS auditor_name,
+               u.real_name AS student_name,
+               act.activity_name
+        FROM Audit a
+        LEFT JOIN User au ON a.auditor_id = au.user_id
+        LEFT JOIN Registration r ON a.register_id = r.register_id
+        LEFT JOIN User u ON r.user_id = u.user_id
+        LEFT JOIN Activity act ON r.activity_id = act.activity_id
+        WHERE a.audit_id = #{auditId}
+    </select>
+    
+    <select id="selectByRegisterId" parameterType="int" resultMap="AuditResultMap">
+        SELECT a.*, 
+               au.real_name AS auditor_name,
+               u.real_name AS student_name,
+               act.activity_name
+        FROM Audit a
+        LEFT JOIN User au ON a.auditor_id = au.user_id
+        LEFT JOIN Registration r ON a.register_id = r.register_id
+        LEFT JOIN User u ON r.user_id = u.user_id
+        LEFT JOIN Activity act ON r.activity_id = act.activity_id
+        WHERE a.register_id = #{registerId}
+        ORDER BY a.audit_time DESC
+        LIMIT 1
+    </select>
+    
+    <select id="selectByAuditorId" parameterType="int" resultMap="AuditResultMap">
+        SELECT a.*, 
+               au.real_name AS auditor_name,
+               u.real_name AS student_name,
+               act.activity_name
+        FROM Audit a
+        LEFT JOIN User au ON a.auditor_id = au.user_id
+        LEFT JOIN Registration r ON a.register_id = r.register_id
+        LEFT JOIN User u ON r.user_id = u.user_id
+        LEFT JOIN Activity act ON r.activity_id = act.activity_id
+        WHERE a.auditor_id = #{auditorId}
+        ORDER BY a.audit_time DESC
+    </select>
+    
+    <insert id="insert" parameterType="com.campus.activity.entity.Audit" 
+            useGeneratedKeys="true" keyProperty="auditId">
+        INSERT INTO Audit(register_id, auditor_id, audit_result, audit_time, audit_comment)
+        VALUES(#{registerId}, #{auditorId}, #{auditResult}, NOW(), #{auditComment})
+    </insert>
+    
+</mapper>
+

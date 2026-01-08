@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.activity.mapper.RegistrationMapper">
+    
+    <resultMap id="RegistrationResultMap" type="com.campus.activity.entity.Registration">
+        <id column="register_id" property="registerId"/>
+        <result column="activity_id" property="activityId"/>
+        <result column="user_id" property="userId"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="audit_status" property="auditStatus"/>
+        <result column="activity_name" property="activityName"/>
+        <result column="username" property="userName"/>
+        <result column="real_name" property="realName"/>
+    </resultMap>
+    
+    <select id="selectById" parameterType="int" resultMap="RegistrationResultMap">
+        SELECT r.*, a.activity_name, u.username, u.real_name 
+        FROM Registration r
+        LEFT JOIN Activity a ON r.activity_id = a.activity_id
+        LEFT JOIN User u ON r.user_id = u.user_id
+        WHERE r.register_id = #{registerId}
+    </select>
+    
+    <select id="selectByActivityId" parameterType="int" resultMap="RegistrationResultMap">
+        SELECT r.*, a.activity_name, u.username, u.real_name 
+        FROM Registration r
+        LEFT JOIN Activity a ON r.activity_id = a.activity_id
+        LEFT JOIN User u ON r.user_id = u.user_id
+        WHERE r.activity_id = #{activityId}
+        ORDER BY r.register_time DESC
+    </select>
+    
+    <select id="selectByUserId" parameterType="int" resultMap="RegistrationResultMap">
+        SELECT r.*, a.activity_name, u.username, u.real_name 
+        FROM Registration r
+        LEFT JOIN Activity a ON r.activity_id = a.activity_id
+        LEFT JOIN User u ON r.user_id = u.user_id
+        WHERE r.user_id = #{userId}
+        ORDER BY r.register_time DESC
+    </select>
+    
+    <select id="selectByActivityAndUser" resultMap="RegistrationResultMap">
+        SELECT r.*, a.activity_name, u.username, u.real_name 
+        FROM Registration r
+        LEFT JOIN Activity a ON r.activity_id = a.activity_id
+        LEFT JOIN User u ON r.user_id = u.user_id
+        WHERE r.activity_id = #{activityId} AND r.user_id = #{userId}
+    </select>
+    
+    <select id="countByActivityId" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM Registration WHERE activity_id = #{activityId}
+    </select>
+    
+    <select id="countPassedByActivityId" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM Registration 
+        WHERE activity_id = #{activityId} AND audit_status = '通过'
+    </select>
+    
+    <insert id="insert" parameterType="com.campus.activity.entity.Registration" 
+            useGeneratedKeys="true" keyProperty="registerId">
+        INSERT INTO Registration(activity_id, user_id, register_time, audit_status)
+        VALUES(#{activityId}, #{userId}, NOW(), #{auditStatus})
+    </insert>
+    
+    <update id="updateAuditStatus">
+        UPDATE Registration 
+        SET audit_status = #{auditStatus}
+        WHERE register_id = #{registerId}
+    </update>
+    
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM Registration WHERE register_id = #{registerId}
+    </delete>
+    
+</mapper>
+
