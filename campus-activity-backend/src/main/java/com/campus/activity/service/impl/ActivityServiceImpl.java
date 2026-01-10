@@ -11,9 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-/**
- * 活动服务实现类
- */
 @Service
 @Transactional
 public class ActivityServiceImpl implements ActivityService {
@@ -47,10 +44,10 @@ public class ActivityServiceImpl implements ActivityService {
     
     @Override
     public int addActivity(Activity activity) {
-        // 设置默认状态
-        if (activity.getStatus() == null || activity.getStatus().isEmpty()) {
-            activity.setStatus("报名中");
-        }
+        // // 设置默认状态
+        // if (activity.getStatus() == null || activity.getStatus().isEmpty()) {
+        //     activity.setStatus("报名中");
+        // }
         return activityMapper.insert(activity);
     }
     
@@ -78,7 +75,8 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public boolean checkActivityFull(Integer activityId) {
         Activity activity = activityMapper.selectById(activityId);
-        if (activity == null || activity.getMaxPeople() == null) {
+        // if (activity == null || activity.getMaxPeople() == null) {
+        if (activity == null) {
             return false;
         }
         int registeredCount = registrationMapper.countPassedByActivityId(activityId);

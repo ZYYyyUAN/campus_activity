@@ -10,9 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-/**
- * 系统日志服务实现类
- */
 @Service
 @Transactional
 public class LogServiceImpl implements LogService {

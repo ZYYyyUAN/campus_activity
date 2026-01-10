@@ -9,9 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * 用户服务实现类
- */
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -51,9 +48,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public int addUser(User user) {
         // 设置默认密码
-        if (user.getPassword() == null || user.getPassword().isEmpty()) {
-            user.setPassword("123456");
-        }
+        // if (user.getPassword() == null || user.getPassword().isEmpty()) {
+        //     user.setPassword("123456");
+        // }
         // 设置默认状态
         if (user.getStatus() == null) {
             user.setStatus(1);

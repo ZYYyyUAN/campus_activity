@@ -29,4 +29,3 @@ public interface ActivityMapper {
     
     int count();
 }
-
