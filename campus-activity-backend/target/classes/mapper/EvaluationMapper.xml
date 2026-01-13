@@ -23,6 +23,14 @@
         WHERE e.eval_id = #{evalId}
     </select>
     
+    <select id="selectAll" resultMap="EvaluationResultMap">
+        SELECT e.*, a.activity_name, u.username, u.real_name 
+        FROM Evaluation e
+        LEFT JOIN Activity a ON e.activity_id = a.activity_id
+        LEFT JOIN User u ON e.user_id = u.user_id
+        ORDER BY e.eval_time DESC
+    </select>
+    
     <select id="selectByActivityId" parameterType="int" resultMap="EvaluationResultMap">
         SELECT e.*, a.activity_name, u.username, u.real_name 
         FROM Evaluation e

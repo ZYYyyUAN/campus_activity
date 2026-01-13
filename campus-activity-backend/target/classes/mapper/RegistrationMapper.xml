@@ -10,12 +10,18 @@
         <result column="register_time" property="registerTime"/>
         <result column="audit_status" property="auditStatus"/>
         <result column="activity_name" property="activityName"/>
+        <result column="activity_type" property="activityType"/>
+        <result column="location" property="location"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
         <result column="username" property="userName"/>
         <result column="real_name" property="realName"/>
     </resultMap>
     
     <select id="selectById" parameterType="int" resultMap="RegistrationResultMap">
-        SELECT r.*, a.activity_name, u.username, u.real_name 
+        SELECT r.*, 
+               a.activity_name, a.activity_type, a.location, a.start_time, a.end_time,
+               u.username, u.real_name 
         FROM Registration r
         LEFT JOIN Activity a ON r.activity_id = a.activity_id
         LEFT JOIN User u ON r.user_id = u.user_id
@@ -23,7 +29,9 @@
     </select>
     
     <select id="selectByActivityId" parameterType="int" resultMap="RegistrationResultMap">
-        SELECT r.*, a.activity_name, u.username, u.real_name 
+        SELECT r.*, 
+               a.activity_name, a.activity_type, a.location, a.start_time, a.end_time,
+               u.username, u.real_name 
         FROM Registration r
         LEFT JOIN Activity a ON r.activity_id = a.activity_id
         LEFT JOIN User u ON r.user_id = u.user_id
@@ -32,7 +40,9 @@
     </select>
     
     <select id="selectByUserId" parameterType="int" resultMap="RegistrationResultMap">
-        SELECT r.*, a.activity_name, u.username, u.real_name 
+        SELECT r.*, 
+               a.activity_name, a.activity_type, a.location, a.start_time, a.end_time,
+               u.username, u.real_name 
         FROM Registration r
         LEFT JOIN Activity a ON r.activity_id = a.activity_id
         LEFT JOIN User u ON r.user_id = u.user_id
@@ -40,21 +50,35 @@
         ORDER BY r.register_time DESC
     </select>
     
+    <select id="selectByPublisherId" parameterType="int" resultMap="RegistrationResultMap">
+        SELECT r.*, 
+               a.activity_name, a.activity_type, a.location, a.start_time, a.end_time,
+               u.username, u.real_name 
+        FROM Registration r
+        LEFT JOIN Activity a ON r.activity_id = a.activity_id
+        LEFT JOIN User u ON r.user_id = u.user_id
+        WHERE a.publisher_id = #{publisherId}
+        ORDER BY r.register_time DESC
+    </select>
+    
+    <select id="selectAll" resultMap="RegistrationResultMap">
+        SELECT r.*, 
+               a.activity_name, a.activity_type, a.location, a.start_time, a.end_time,
+               u.username, u.real_name 
+        FROM Registration r
+        LEFT JOIN Activity a ON r.activity_id = a.activity_id
+        LEFT JOIN User u ON r.user_id = u.user_id
+        ORDER BY r.register_time DESC
+    </select>
+    
     <select id="selectByActivityAndUser" resultMap="RegistrationResultMap">
-        SELECT r.*, a.activity_name, u.username, u.real_name 
+        SELECT r.*, 
+               a.activity_name, a.activity_type, a.location, a.start_time, a.end_time,
+               u.username, u.real_name 
         FROM Registration r
         LEFT JOIN Activity a ON r.activity_id = a.activity_id
         LEFT JOIN User u ON r.user_id = u.user_id
         WHERE r.activity_id = #{activityId} AND r.user_id = #{userId}
-    </select>
-    
-    <select id="countByActivityId" parameterType="int" resultType="int">
-        SELECT COUNT(*) FROM Registration WHERE activity_id = #{activityId}
-    </select>
-    
-    <select id="countPassedByActivityId" parameterType="int" resultType="int">
-        SELECT COUNT(*) FROM Registration 
-        WHERE activity_id = #{activityId} AND audit_status = '通过'
     </select>
     
     <insert id="insert" parameterType="com.campus.activity.entity.Registration" 

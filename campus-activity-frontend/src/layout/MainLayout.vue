@@ -30,18 +30,66 @@
             <i class="el-icon-data-line"></i>
             <span>首页</span>
           </el-menu-item>
-          <el-menu-item index="/activity">
-            <i class="el-icon-tickets"></i>
-            <span>活动管理</span>
-          </el-menu-item>
-          <el-menu-item index="/user" v-if="isAdmin">
-            <i class="el-icon-user"></i>
-            <span>用户管理</span>
-          </el-menu-item>
-          <el-menu-item index="/log" v-if="isAdmin">
-            <i class="el-icon-document"></i>
-            <span>日志管理</span>
-          </el-menu-item>
+          
+          <!-- 管理员菜单 -->
+          <template v-if="isAdmin">
+            <el-menu-item index="/activity">
+              <i class="el-icon-tickets"></i>
+              <span>活动管理</span>
+            </el-menu-item>
+            <el-menu-item index="/publisher/audit">
+              <i class="el-icon-check"></i>
+              <span>报名审核</span>
+            </el-menu-item>
+            <el-menu-item index="/publisher/statistics">
+              <i class="el-icon-data-analysis"></i>
+              <span>参与情况</span>
+            </el-menu-item>
+            <el-menu-item index="/evaluation">
+              <i class="el-icon-star-off"></i>
+              <span>评价管理</span>
+            </el-menu-item>
+            <el-menu-item index="/user">
+              <i class="el-icon-user"></i>
+              <span>用户管理</span>
+            </el-menu-item>
+            <el-menu-item index="/log">
+              <i class="el-icon-document"></i>
+              <span>日志管理</span>
+            </el-menu-item>
+          </template>
+          
+          <!-- 发布者菜单 -->
+          <template v-if="isPublisher">
+            <el-menu-item index="/activity">
+              <i class="el-icon-tickets"></i>
+              <span>活动管理</span>
+            </el-menu-item>
+            <el-menu-item index="/publisher/audit">
+              <i class="el-icon-check"></i>
+              <span>报名审核</span>
+            </el-menu-item>
+            <el-menu-item index="/publisher/statistics">
+              <i class="el-icon-data-analysis"></i>
+              <span>参与情况</span>
+            </el-menu-item>
+          </template>
+          
+          <!-- 学生菜单 -->
+          <template v-if="isStudent">
+            <el-menu-item index="/student/browse">
+              <i class="el-icon-view"></i>
+              <span>活动浏览</span>
+            </el-menu-item>
+            <el-menu-item index="/student/registration">
+              <i class="el-icon-edit-outline"></i>
+              <span>我的报名</span>
+            </el-menu-item>
+            <el-menu-item index="/student/signscore">
+              <i class="el-icon-star-on"></i>
+              <span>我的积分</span>
+            </el-menu-item>
+          </template>
         </el-menu>
       </el-aside>
       <el-main class="main-content">
@@ -61,6 +109,12 @@ export default {
     isAdmin() {
       return this.$store.getters.isAdmin
     },
+    isPublisher() {
+      return this.$store.getters.isPublisher
+    },
+    isStudent() {
+      return this.$store.getters.isStudent
+    },
     activeMenu() {
       return this.$route.path
     }
@@ -76,6 +130,8 @@ export default {
           this.$store.dispatch('logout')
           this.$message.success('已退出登录')
           this.$router.push('/login')
+        }).catch(() => {
+          // 用户点击取消，不需要处理
         })
       }
     }

@@ -3,23 +3,31 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+const savedUser = sessionStorage.getItem('user')
+
 export default new Vuex.Store({
   state: {
-    user: null,
-    token: localStorage.getItem('token') || ''
+    user: savedUser ? JSON.parse(savedUser) : null,
+    token: sessionStorage.getItem('token') || ''
   },
   mutations: {
     SET_USER(state, user) {
       state.user = user
+      if (user) {
+        sessionStorage.setItem('user', JSON.stringify(user))
+      }
     },
     SET_TOKEN(state, token) {
       state.token = token
-      localStorage.setItem('token', token)
+      if (token) {
+        sessionStorage.setItem('token', token)
+      }
     },
     CLEAR_USER(state) {
       state.user = null
       state.token = ''
-      localStorage.removeItem('token')
+      sessionStorage.removeItem('user')
+      sessionStorage.removeItem('token')
     }
   },
   actions: {
@@ -37,4 +45,3 @@ export default new Vuex.Store({
     isStudent: state => state.user && state.user.role === '学生'
   }
 })
-

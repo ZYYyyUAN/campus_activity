@@ -48,14 +48,6 @@
         WHERE s.activity_id = #{activityId} AND s.user_id = #{userId}
     </select>
     
-    <select id="countByActivityId" parameterType="int" resultType="int">
-        SELECT COUNT(*) FROM Sign_Score WHERE activity_id = #{activityId}
-    </select>
-    
-    <select id="sumScoreByUserId" parameterType="int" resultType="Integer">
-        SELECT COALESCE(SUM(score), 0) FROM Sign_Score WHERE user_id = #{userId}
-    </select>
-    
     <insert id="insert" parameterType="com.campus.activity.entity.SignScore" 
             useGeneratedKeys="true" keyProperty="signId">
         INSERT INTO Sign_Score(activity_id, user_id, sign_time, score)

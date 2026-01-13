@@ -47,7 +47,7 @@ public class LogController {
      */
     @GetMapping("/user/{userId}")
     public Result<List<Log>> getLogsByUserId(@PathVariable Integer userId) {
-        List<Log> logs = logService.getLogsByUserId(userId);
+        List<Log> logs = logService.getLogByUserId(userId);
         return Result.success(logs);
     }
     
@@ -56,7 +56,7 @@ public class LogController {
      */
     @GetMapping("/type/{operationType}")
     public Result<List<Log>> getLogsByOperationType(@PathVariable String operationType) {
-        List<Log> logs = logService.getLogsByOperationType(operationType);
+        List<Log> logs = logService.getLogByOperationType(operationType);
         return Result.success(logs);
     }
     
@@ -65,11 +65,10 @@ public class LogController {
      */
     @GetMapping("/query")
     public Result<List<Log>> queryLogs(
-            @RequestParam(required = false) Integer userId,
-            @RequestParam(required = false) String operationType,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime) {
-        List<Log> logs = logService.queryLogs(userId, operationType, startTime, endTime);
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endDate,
+            @RequestParam(required = false) String operationType) {
+        List<Log> logs = logService.queryLog(startDate, endDate, operationType);
         return Result.success(logs);
     }
     
@@ -95,4 +94,3 @@ public class LogController {
         return Result.success("已清理" + result + "条过期日志", null);
     }
 }
-

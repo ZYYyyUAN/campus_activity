@@ -83,13 +83,9 @@
         DELETE FROM Log WHERE log_id = #{logId}
     </delete>
     
-    <delete id="deleteBeforeDate" parameterType="date">
+    <delete id="deleteByDateBefore" parameterType="date">
         DELETE FROM Log WHERE operation_time &lt; #{date}
     </delete>
-    
-    <select id="count" resultType="int">
-        SELECT COUNT(*) FROM Log
-    </select>
     
 </mapper>
 

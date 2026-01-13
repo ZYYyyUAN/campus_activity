@@ -39,7 +39,7 @@
 import { userApi } from '@/api'
 
 export default {
-  name: 'Login',
+  name: 'LoginPage',
   data() {
     return {
       loginForm: {
@@ -70,7 +70,7 @@ export default {
                 token: 'token_' + res.data.userId
               })
               this.$message.success('登录成功')
-              this.$router.push('/')
+              this.$router.push('/dashboard')
             }
           } catch (error) {
             console.error('登录失败:', error)

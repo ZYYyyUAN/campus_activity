@@ -10,6 +10,8 @@ public interface EvaluationMapper {
     
     Evaluation selectById(Integer evalId);
     
+    List<Evaluation> selectAll();
+    
     List<Evaluation> selectByActivityId(Integer activityId);
     
     List<Evaluation> selectByUserId(Integer userId);

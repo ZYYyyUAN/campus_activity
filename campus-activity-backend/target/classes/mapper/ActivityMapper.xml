@@ -86,9 +86,5 @@
         DELETE FROM Activity WHERE activity_id = #{activityId}
     </delete>
     
-    <select id="count" resultType="int">
-        SELECT COUNT(*) FROM Activity
-    </select>
-    
 </mapper>
 

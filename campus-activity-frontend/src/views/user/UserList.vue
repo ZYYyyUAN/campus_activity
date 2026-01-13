@@ -23,7 +23,7 @@
       
       <!-- 用户表格 -->
       <el-table :data="userList" border style="width: 100%" v-loading="loading">
-        <el-table-column prop="userId" label="用户ID" width="80"></el-table-column>
+        <el-table-column type="index" label="序号" width="60"></el-table-column>
         <el-table-column prop="username" label="用户名" width="150"></el-table-column>
         <el-table-column prop="realName" label="真实姓名" width="120"></el-table-column>
         <el-table-column prop="role" label="角色" width="100">
@@ -208,6 +208,8 @@ export default {
         } catch (error) {
           console.error('删除失败:', error)
         }
+      }).catch(() => {
+        // 用户点击取消，不需要处理
       })
     },
     handleResetPassword(row) {
@@ -224,6 +226,8 @@ export default {
         } catch (error) {
           console.error('重置密码失败:', error)
         }
+      }).catch(() => {
+        // 用户点击取消，不需要处理
       })
     },
     handleToggleStatus(row) {
@@ -246,6 +250,8 @@ export default {
         } catch (error) {
           console.error('更新状态失败:', error)
         }
+      }).catch(() => {
+        // 用户点击取消，不需要处理
       })
     },
     handleSearch() {

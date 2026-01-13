@@ -14,12 +14,12 @@ public interface RegistrationMapper {
     
     List<Registration> selectByUserId(Integer userId);
     
+    List<Registration> selectByPublisherId(Integer publisherId);
+    
+    List<Registration> selectAll();
+    
     Registration selectByActivityAndUser(@Param("activityId") Integer activityId, 
                                          @Param("userId") Integer userId);
-    
-    int countByActivityId(Integer activityId);
-
-    int countPassedByActivityId(Integer activityId);
 
     int insert(Registration registration);
     

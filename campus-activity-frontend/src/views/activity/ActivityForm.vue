@@ -50,7 +50,8 @@
           <el-input-number v-model="activityForm.maxPeople" :min="0" placeholder="请输入人数上限" style="width: 100%"></el-input-number>
         </el-form-item>
         
-        <el-form-item label="活动状态" prop="status">
+        <!-- 只在编辑模式下显示状态选择 -->
+        <el-form-item label="活动状态" prop="status" v-if="isEdit">
           <el-select v-model="activityForm.status" placeholder="请选择活动状态" style="width: 100%">
             <el-option label="报名中" value="报名中"></el-option>
             <el-option label="已结束" value="已结束"></el-option>
@@ -100,10 +101,8 @@ export default {
           { required: true, message: '请选择结束时间', trigger: 'change' }
         ],
         maxPeople: [
-          { required: true, message: '请输入人数上限', trigger: 'blur' }
-        ],
-        status: [
-          { required: true, message: '请选择活动状态', trigger: 'change' }
+          { required: true, message: '请输入人数上限', trigger: 'blur' },
+          { type: 'number', min: 1, message: '人数上限必须大于0', trigger: 'blur' }
         ]
       },
       isEdit: false,
@@ -152,9 +151,18 @@ export default {
             if (res.code === 200) {
               this.$message.success(this.isEdit ? '更新成功' : '添加成功')
               this.$router.push('/activity')
+            } else {
+              this.$message.error(res.message || '保存失败')
             }
           } catch (error) {
             console.error('保存失败:', error)
+            const errorMsg = error.response?.data?.message || error.message || '保存失败'
+            this.$message({
+              message: errorMsg,
+              type: 'error',
+              duration: 5000,
+              showClose: true
+            })
           }
         }
       })
@@ -187,3 +195,10 @@ export default {
 }
 </style>
 
+<style>
+/* 支持多行错误提示 */
+.el-message__content {
+  white-space: pre-line;
+  line-height: 1.6;
+}
+</style>

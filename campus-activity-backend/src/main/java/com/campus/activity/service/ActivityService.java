@@ -15,14 +15,15 @@ public interface ActivityService {
     List<Activity> queryActivities(String activityType, Date startTime, 
                                    Date endTime, String keyword, Integer publisherId);
     
+    List<Activity> queryActivitiesByProcedure(String activityType, Date startTime, Date endTime);
+    
     int addActivity(Activity activity);
     
     int updateActivity(Activity activity);
     
     int deleteActivity(Integer activityId);
     
-    boolean validateActivityTime(Date startTime, Date endTime);  //校验活动时间是否合理
+    boolean validateActivityTime(Date startTime, Date endTime);
     
-    boolean checkActivityFull(Integer activityId);  //检查报名人数是否已满
+    boolean checkActivityFull(Integer activityId);
 }
-

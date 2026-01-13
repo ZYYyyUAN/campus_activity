@@ -3,6 +3,7 @@ package com.campus.activity.mapper;
 import com.campus.activity.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 
@@ -26,4 +27,7 @@ public interface UserMapper {
     int updatePassword(@Param("userId") Integer userId, @Param("password") String password);
 
     int updateStatus(@Param("userId") Integer userId, @Param("status") Integer status);
+    
+    @Select("CALL reset_user_password(#{userId})")
+    int resetPasswordByProcedure(@Param("userId") Integer userId);
 }

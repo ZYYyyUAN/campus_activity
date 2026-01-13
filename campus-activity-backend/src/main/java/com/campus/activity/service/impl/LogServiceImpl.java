@@ -28,26 +28,27 @@ public class LogServiceImpl implements LogService {
     }
     
     @Override
-    public List<Log> getLogsByUserId(Integer userId) {
+    public List<Log> getLogByUserId(Integer userId) {
         return logMapper.selectByUserId(userId);
     }
     
     @Override
-    public List<Log> getLogsByOperationType(String operationType) {
+    public List<Log> getLogByOperationType(String operationType) {
         return logMapper.selectByOperationType(operationType);
     }
     
     @Override
-    public List<Log> queryLogs(Integer userId, String operationType, 
-                               Date startTime, Date endTime) {
-        return logMapper.selectByConditions(userId, operationType, startTime, endTime);
+    public List<Log> queryLog(Date startDate, Date endDate, String operationType) {
+        return logMapper.selectByConditions(null, operationType, startDate, endDate);
     }
     
     @Override
-    public int addLog(Log log) {
-        if (log.getOperationTime() == null) {
-            log.setOperationTime(new Date());
-        }
+    public int addLog(Integer userId, String operationType, String operationContent) {
+        Log log = new Log();
+        log.setUserId(userId);
+        log.setOperationType(operationType);
+        log.setOperationContent(operationContent);
+        log.setOperationTime(new Date());
         return logMapper.insert(log);
     }
     
@@ -57,8 +58,7 @@ public class LogServiceImpl implements LogService {
     }
     
     @Override
-    public int cleanExpiredLogs(Date date) {
-        return logMapper.deleteBeforeDate(date);
+    public int cleanExpiredLogs(Date beforeDate) {
+        return logMapper.deleteByDateBefore(beforeDate);
     }
 }
-

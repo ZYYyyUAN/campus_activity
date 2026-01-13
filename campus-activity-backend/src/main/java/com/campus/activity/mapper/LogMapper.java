@@ -29,8 +29,6 @@ public interface LogMapper {
     
     int deleteById(Integer logId);
     
-    int deleteBeforeDate(Date date); //删除指定时间之前的日志
-
-    int count();
+    int deleteByDateBefore(Date date); //删除指定时间之前的日志
 }
 

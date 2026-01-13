@@ -71,16 +71,15 @@ public class ActivityController {
      */
     @PostMapping("/add")
     public Result<String> addActivity(@RequestBody Activity activity) {
-        // 校验活动时间
-        if (!activityService.validateActivityTime(activity.getStartTime(), activity.getEndTime())) {
-            return Result.error("活动时间设置不合理");
+        try {
+            int result = activityService.addActivity(activity);
+            if (result > 0) {
+                return Result.success("活动发布成功", null);
+            }
+            return Result.error("活动发布失败");
+        } catch (RuntimeException e) {
+            return Result.error(e.getMessage());
         }
-        
-        int result = activityService.addActivity(activity);
-        if (result > 0) {
-            return Result.success("活动发布成功", null);
-        }
-        return Result.error("活动发布失败");
     }
     
     /**
@@ -88,16 +87,15 @@ public class ActivityController {
      */
     @PutMapping("/update")
     public Result<String> updateActivity(@RequestBody Activity activity) {
-        // 校验活动时间
-        if (!activityService.validateActivityTime(activity.getStartTime(), activity.getEndTime())) {
-            return Result.error("活动时间设置不合理");
+        try {
+            int result = activityService.updateActivity(activity);
+            if (result > 0) {
+                return Result.success("活动更新成功", null);
+            }
+            return Result.error("活动更新失败");
+        } catch (RuntimeException e) {
+            return Result.error(e.getMessage());
         }
-        
-        int result = activityService.updateActivity(activity);
-        if (result > 0) {
-            return Result.success("活动更新成功", null);
-        }
-        return Result.error("活动更新失败");
     }
     
     /**
@@ -119,6 +117,18 @@ public class ActivityController {
     public Result<Boolean> checkActivityFull(@PathVariable Integer activityId) {
         boolean isFull = activityService.checkActivityFull(activityId);
         return Result.success(isFull);
+    }
+    
+    /**
+     * 使用存储过程查询活动
+     */
+    @GetMapping("/query/procedure")
+    public Result<List<Activity>> queryActivitiesByProcedure(
+            @RequestParam(required = false) String activityType,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startTime,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date endTime) {
+        List<Activity> activities = activityService.queryActivitiesByProcedure(activityType, startTime, endTime);
+        return Result.success(activities);
     }
 }
 

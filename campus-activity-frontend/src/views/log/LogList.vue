@@ -11,7 +11,7 @@
           <el-select v-model="searchForm.operationType" placeholder="请选择" clearable>
             <el-option label="发布活动" value="发布活动"></el-option>
             <el-option label="删除活动" value="删除活动"></el-option>
-            <el-option label="审核通过" value="审核通过"></el-option>
+            <el-option label="审核报名" value="审核报名"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="开始时间">
@@ -40,7 +40,7 @@
       
       <!-- 日志表格 -->
       <el-table :data="logList" border style="width: 100%" v-loading="loading">
-        <el-table-column prop="logId" label="日志ID" width="80"></el-table-column>
+        <el-table-column type="index" label="序号" width="60"></el-table-column>
         <el-table-column prop="realName" label="操作用户" width="120"></el-table-column>
         <el-table-column prop="operationType" label="操作类型" width="120">
           <template slot-scope="scope">
@@ -154,6 +154,8 @@ export default {
         } catch (error) {
           console.error('删除失败:', error)
         }
+      }).catch(() => {
+        // 用户点击取消，不需要处理
       })
     },
     handleSizeChange(val) {
@@ -168,7 +170,7 @@ export default {
       const colorMap = {
         '发布活动': 'success',
         '删除活动': 'danger',
-        '审核通过': 'warning'
+        '审核报名': 'warning'
       }
       return colorMap[type] || 'info'
     },
