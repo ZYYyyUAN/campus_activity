@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
-/**
- * 活动控制器
- */
 @RestController
 @RequestMapping("/activity")
 @CrossOrigin
@@ -20,10 +17,7 @@ public class ActivityController {
     
     @Autowired
     private ActivityService activityService;
-    
-    /**
-     * 根据ID查询活动
-     */
+
     @GetMapping("/{activityId}")
     public Result<Activity> getActivityById(@PathVariable Integer activityId) {
         Activity activity = activityService.getActivityById(activityId);
@@ -32,28 +26,19 @@ public class ActivityController {
         }
         return Result.error("活动不存在");
     }
-    
-    /**
-     * 查询所有活动
-     */
+
     @GetMapping("/list")
     public Result<List<Activity>> getAllActivities() {
         List<Activity> activities = activityService.getAllActivities();
         return Result.success(activities);
     }
     
-    /**
-     * 根据发布者ID查询活动
-     */
     @GetMapping("/publisher/{publisherId}")
     public Result<List<Activity>> getActivitiesByPublisherId(@PathVariable Integer publisherId) {
         List<Activity> activities = activityService.getActivitiesByPublisherId(publisherId);
         return Result.success(activities);
     }
     
-    /**
-     * 多条件查询活动
-     */
     @GetMapping("/query")
     public Result<List<Activity>> queryActivities(
             @RequestParam(required = false) String activityType,
@@ -65,10 +50,7 @@ public class ActivityController {
                 activityType, startTime, endTime, keyword, publisherId);
         return Result.success(activities);
     }
-    
-    /**
-     * 添加活动
-     */
+
     @PostMapping("/add")
     public Result<String> addActivity(@RequestBody Activity activity) {
         try {
@@ -82,9 +64,6 @@ public class ActivityController {
         }
     }
     
-    /**
-     * 更新活动
-     */
     @PutMapping("/update")
     public Result<String> updateActivity(@RequestBody Activity activity) {
         try {
@@ -97,10 +76,7 @@ public class ActivityController {
             return Result.error(e.getMessage());
         }
     }
-    
-    /**
-     * 删除活动
-     */
+
     @DeleteMapping("/{activityId}")
     public Result<String> deleteActivity(@PathVariable Integer activityId) {
         int result = activityService.deleteActivity(activityId);
@@ -110,18 +86,12 @@ public class ActivityController {
         return Result.error("活动删除失败");
     }
     
-    /**
-     * 检查活动是否已满
-     */
     @GetMapping("/checkFull/{activityId}")
     public Result<Boolean> checkActivityFull(@PathVariable Integer activityId) {
         boolean isFull = activityService.checkActivityFull(activityId);
         return Result.success(isFull);
     }
-    
-    /**
-     * 使用存储过程查询活动
-     */
+
     @GetMapping("/query/procedure")
     public Result<List<Activity>> queryActivitiesByProcedure(
             @RequestParam(required = false) String activityType,

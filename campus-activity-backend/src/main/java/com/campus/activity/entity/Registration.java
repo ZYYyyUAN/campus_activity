@@ -14,7 +14,7 @@ public class Registration implements Serializable {
     private Date registerTime;
     private String auditStatus; 
     
-    // 关联的活动信息（transient字段，用于前端展示）
+    // 关联的活动信息
     private String activityName;
     private String activityType;
     private String location;

@@ -65,18 +65,15 @@ public class RegistrationServiceImpl implements RegistrationService {
     
     @Override
     public int registerActivity(Registration registration) {
-        // 1. 检查是否已报名
         if (checkAlreadyRegistered(registration.getActivityId(), registration.getUserId())) {
             return 0;
         }
-        
-        // 2. 检查活动是否存在
+
         Activity activity = activityMapper.selectById(registration.getActivityId());
         if (activity == null) {
             return -4; // 活动不存在
         }
         
-        // 3. 检查活动人数是否已满
         if (activity.getMaxPeople() != null) {
             int registeredCount = countPassedByActivityId(registration.getActivityId());
             if (registeredCount >= activity.getMaxPeople()) {
@@ -84,7 +81,6 @@ public class RegistrationServiceImpl implements RegistrationService {
             }
         }
         
-        // 4. 设置审核状态并插入报名记录
         registration.setAuditStatus("待审");
         return registrationMapper.insert(registration);
     }

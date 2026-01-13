@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional //保证事务性
 public class ActivityServiceImpl implements ActivityService {
     
     @Autowired
@@ -50,38 +50,18 @@ public class ActivityServiceImpl implements ActivityService {
     
     @Override
     public int addActivity(Activity activity) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date now = new Date();
-        
-        // 1. 验证开始时间必须晚于当前时间
-        if (activity.getStartTime().before(now)) {
-            throw new RuntimeException(String.format(
-                "活动开始时间不能早于当前时间！\n" +
-                "您选择的开始时间：%s\n" +
-                "当前服务器时间：%s", 
-                sdf.format(activity.getStartTime()), 
-                sdf.format(now)
-            ));
+        Date activityStartTime = activity.getStartTime();
+        Date activityEndTime = activity.getEndTime();
+
+        boolean isTimeValid = validateActivityTime(activityStartTime, activityEndTime);
+        if (!isTimeValid) {
+            throw new RuntimeException("活动时间设置无效！");
         }
         
-        // 2. 验证结束时间晚于开始时间
-        if (activity.getEndTime().before(activity.getStartTime()) || 
-            activity.getEndTime().equals(activity.getStartTime())) {
-            throw new RuntimeException(String.format(
-                "活动结束时间必须晚于开始时间！\n" +
-                "开始时间：%s\n" +
-                "结束时间：%s", 
-                sdf.format(activity.getStartTime()), 
-                sdf.format(activity.getEndTime())
-            ));
-        }
-        
-        // 3. 验证人数上限
         if (activity.getMaxPeople() == null || activity.getMaxPeople() <= 0) {
             throw new RuntimeException("人数上限必须大于0");
         }
-        
-        // 4. 验证必填字段
+
         if (activity.getActivityName() == null || activity.getActivityName().trim().isEmpty()) {
             throw new RuntimeException("活动名称不能为空");
         }
@@ -89,7 +69,6 @@ public class ActivityServiceImpl implements ActivityService {
             throw new RuntimeException("活动地点不能为空");
         }
         
-        // 5. 设置默认状态为"报名中"
         if (activity.getStatus() == null || activity.getStatus().trim().isEmpty()) {
             activity.setStatus("报名中");
         }
@@ -100,40 +79,18 @@ public class ActivityServiceImpl implements ActivityService {
     
     @Override
     public int updateActivity(Activity activity) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        
-        // 1. 验证时间合理性
-        if (activity.getStartTime() != null && activity.getEndTime() != null) {
-            Date now = new Date();
-            
-            if (activity.getStartTime().before(now)) {
-                throw new RuntimeException(String.format(
-                    "活动开始时间不能早于当前时间！\n" +
-                    "您选择的开始时间：%s\n" +
-                    "当前服务器时间：%s", 
-                    sdf.format(activity.getStartTime()), 
-                    sdf.format(now)
-                ));
-            }
-            
-            if (activity.getEndTime().before(activity.getStartTime()) ||
-                activity.getEndTime().equals(activity.getStartTime())) {
-                throw new RuntimeException(String.format(
-                    "活动结束时间必须晚于开始时间！\n" +
-                    "开始时间：%s\n" +
-                    "结束时间：%s", 
-                    sdf.format(activity.getStartTime()), 
-                    sdf.format(activity.getEndTime())
-                ));
-            }
+        Date activityStartTime = activity.getStartTime();
+        Date activityEndTime = activity.getEndTime();
+
+        boolean isTimeValid = validateActivityTime(activityStartTime, activityEndTime);
+        if (!isTimeValid) {
+            throw new RuntimeException("活动时间设置无效！");
         }
         
-        // 2. 验证人数上限
         if (activity.getMaxPeople() != null && activity.getMaxPeople() <= 0) {
             throw new RuntimeException("人数上限必须大于0");
         }
         
-        // 3. 更新活动
         return activityMapper.update(activity);
     }
     
@@ -145,11 +102,9 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public boolean validateActivityTime(Date startTime, Date endTime) {
         Date now = new Date();
-        // 开始时间不能早于当前时间
         if (startTime.before(now)) {
             return false;
         }
-        // 结束时间必须晚于开始时间
         return endTime.after(startTime);
     }
     

@@ -21,8 +21,6 @@ public interface UserService {
 
     int deleteUser(Integer userId);
 
-    int changePassword(Integer userId, String oldPassword, String newPassword);  //修改密码
-
     int resetPassword(Integer userId);  //重置密码（管理员）
 
     int updateStatus(Integer userId, Integer status);  //更新用户状态

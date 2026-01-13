@@ -56,9 +56,4 @@ public class LogServiceImpl implements LogService {
     public int deleteLog(Integer logId) {
         return logMapper.deleteById(logId);
     }
-    
-    @Override
-    public int cleanExpiredLogs(Date beforeDate) {
-        return logMapper.deleteByDateBefore(beforeDate);
-    }
 }

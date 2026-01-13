@@ -23,9 +23,6 @@ export const userApi = {
   deleteUser(userId) {
     return axios.delete(`/user/${userId}`)
   },
-  changePassword(data) {
-    return axios.post('/user/changePassword', data)
-  },
   resetPassword(userId) {
     return axios.post(`/user/resetPassword/${userId}`)
   },

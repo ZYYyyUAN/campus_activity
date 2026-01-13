@@ -19,9 +19,6 @@ public class UserController {
     @Autowired
     private UserService userService;
     
-    /**
-     * 用户登录
-     */
     @PostMapping("/login")
     public Result<User> login(@RequestBody User user) {
         User loginUser = userService.login(user.getUsername(), user.getPassword());
@@ -33,9 +30,6 @@ public class UserController {
         return Result.error("用户名或密码错误");
     }
     
-    /**
-     * 根据ID查询用户
-     */
     @GetMapping("/{userId}")
     public Result<User> getUserById(@PathVariable Integer userId) {
         User user = userService.getUserById(userId);
@@ -46,9 +40,6 @@ public class UserController {
         return Result.error("用户不存在");
     }
     
-    /**
-     * 查询所有用户
-     */
     @GetMapping("/list")
     public Result<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
@@ -57,9 +48,6 @@ public class UserController {
         return Result.success(users);
     }
     
-    /**
-     * 根据角色查询用户
-     */
     @GetMapping("/role/{role}")
     public Result<List<User>> getUsersByRole(@PathVariable String role) {
         List<User> users = userService.getUsersByRole(role);
@@ -67,9 +55,6 @@ public class UserController {
         return Result.success(users);
     }
     
-    /**
-     * 添加用户
-     */
     @PostMapping("/add")
     public Result<String> addUser(@RequestBody User user) {
         int result = userService.addUser(user);
@@ -79,9 +64,6 @@ public class UserController {
         return Result.error("添加失败");
     }
     
-    /**
-     * 更新用户信息
-     */
     @PutMapping("/update")
     public Result<String> updateUser(@RequestBody User user) {
         int result = userService.updateUser(user);
@@ -91,9 +73,6 @@ public class UserController {
         return Result.error("更新失败");
     }
     
-    /**
-     * 删除用户
-     */
     @DeleteMapping("/{userId}")
     public Result<String> deleteUser(@PathVariable Integer userId) {
         int result = userService.deleteUser(userId);
@@ -102,24 +81,7 @@ public class UserController {
         }
         return Result.error("删除失败");
     }
-    
-    /**
-     * 修改密码
-     */
-    @PostMapping("/changePassword")
-    public Result<String> changePassword(@RequestBody ChangePasswordRequest request) {
-        int result = userService.changePassword(request.getUserId(), 
-                                               request.getOldPassword(), 
-                                               request.getNewPassword());
-        if (result > 0) {
-            return Result.success("密码修改成功", null);
-        }
-        return Result.error("原密码错误或用户不存在");
-    }
-    
-    /**
-     * 重置密码（管理员）
-     */
+
     @PostMapping("/resetPassword/{userId}")
     public Result<String> resetPassword(@PathVariable Integer userId) {
         int result = userService.resetPassword(userId);
@@ -128,10 +90,7 @@ public class UserController {
         }
         return Result.error("重置失败");
     }
-    
-    /**
-     * 更新用户状态
-     */
+
     @PutMapping("/status")
     public Result<String> updateStatus(@RequestBody UserStatusRequest request) {
         int result = userService.updateStatus(request.getUserId(), request.getStatus());
@@ -141,31 +100,11 @@ public class UserController {
         return Result.error("状态更新失败");
     }
     
-    /**
-     * 修改密码请求对象
-     */
-    public static class ChangePasswordRequest {
-        private Integer userId;
-        private String oldPassword;
-        private String newPassword;
-        
-        // getters and setters
-        public Integer getUserId() { return userId; }
-        public void setUserId(Integer userId) { this.userId = userId; }
-        public String getOldPassword() { return oldPassword; }
-        public void setOldPassword(String oldPassword) { this.oldPassword = oldPassword; }
-        public String getNewPassword() { return newPassword; }
-        public void setNewPassword(String newPassword) { this.newPassword = newPassword; }
-    }
-    
-    /**
-     * 用户状态请求对象
-     */
-    public static class UserStatusRequest {
+   //用户状态请求对象
+    public static class UserStatusRequest { 
         private Integer userId;
         private Integer status;
         
-        // getters and setters
         public Integer getUserId() { return userId; }
         public void setUserId(Integer userId) { this.userId = userId; }
         public Integer getStatus() { return status; }

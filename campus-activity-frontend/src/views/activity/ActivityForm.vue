@@ -50,7 +50,6 @@
           <el-input-number v-model="activityForm.maxPeople" :min="0" placeholder="请输入人数上限" style="width: 100%"></el-input-number>
         </el-form-item>
         
-        <!-- 只在编辑模式下显示状态选择 -->
         <el-form-item label="活动状态" prop="status" v-if="isEdit">
           <el-select v-model="activityForm.status" placeholder="请选择活动状态" style="width: 100%">
             <el-option label="报名中" value="报名中"></el-option>

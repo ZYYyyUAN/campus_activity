@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
-/**
- * 系统日志控制器
- */
 @RestController
 @RequestMapping("/log")
 @CrossOrigin
@@ -21,9 +18,6 @@ public class LogController {
     @Autowired
     private LogService logService;
     
-    /**
-     * 根据ID查询日志
-     */
     @GetMapping("/{logId}")
     public Result<Log> getLogById(@PathVariable Integer logId) {
         Log log = logService.getLogById(logId);
@@ -33,36 +27,24 @@ public class LogController {
         return Result.error("日志不存在");
     }
     
-    /**
-     * 查询所有日志
-     */
     @GetMapping("/list")
     public Result<List<Log>> getAllLogs() {
         List<Log> logs = logService.getAllLogs();
         return Result.success(logs);
     }
-    
-    /**
-     * 根据用户ID查询日志
-     */
+
     @GetMapping("/user/{userId}")
     public Result<List<Log>> getLogsByUserId(@PathVariable Integer userId) {
         List<Log> logs = logService.getLogByUserId(userId);
         return Result.success(logs);
     }
-    
-    /**
-     * 根据操作类型查询日志
-     */
+
     @GetMapping("/type/{operationType}")
     public Result<List<Log>> getLogsByOperationType(@PathVariable String operationType) {
         List<Log> logs = logService.getLogByOperationType(operationType);
         return Result.success(logs);
     }
     
-    /**
-     * 多条件查询日志
-     */
     @GetMapping("/query")
     public Result<List<Log>> queryLogs(
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date startDate,
@@ -72,9 +54,6 @@ public class LogController {
         return Result.success(logs);
     }
     
-    /**
-     * 删除日志
-     */
     @DeleteMapping("/{logId}")
     public Result<String> deleteLog(@PathVariable Integer logId) {
         int result = logService.deleteLog(logId);
@@ -84,13 +63,4 @@ public class LogController {
         return Result.error("日志删除失败");
     }
     
-    /**
-     * 清理过期日志
-     */
-    @DeleteMapping("/clean")
-    public Result<String> cleanExpiredLogs(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-        int result = logService.cleanExpiredLogs(date);
-        return Result.success("已清理" + result + "条过期日志", null);
-    }
 }

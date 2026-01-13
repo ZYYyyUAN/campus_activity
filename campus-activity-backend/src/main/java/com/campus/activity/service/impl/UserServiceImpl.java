@@ -47,11 +47,11 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public int addUser(User user) {
-        // 设置默认密码
-        // if (user.getPassword() == null || user.getPassword().isEmpty()) {
-        //     user.setPassword("123456");
-        // }
-        // 设置默认状态
+        //设置默认密码
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            user.setPassword("123456");
+        }
+        //设置默认状态
         if (user.getStatus() == null) {
             user.setStatus(1);
         }
@@ -67,16 +67,6 @@ public class UserServiceImpl implements UserService {
     public int deleteUser(Integer userId) {
         return userMapper.deleteById(userId);
     }
-    
-    @Override
-    public int changePassword(Integer userId, String oldPassword, String newPassword) {
-        User user = userMapper.selectById(userId);
-        if (user == null || !user.getPassword().equals(oldPassword)) {
-            return 0;
-        }
-        return userMapper.updatePassword(userId, newPassword);
-    }
-    
     @Override
     public int resetPassword(Integer userId) {
         // 调用存储过程重置密码

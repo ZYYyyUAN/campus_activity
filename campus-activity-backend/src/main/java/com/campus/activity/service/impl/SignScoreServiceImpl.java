@@ -64,24 +64,20 @@ public class SignScoreServiceImpl implements SignScoreService {
     
     @Override
     public int signActivity(SignScore signScore) {
-        // 1. 检查是否已签到
         if (checkAlreadySigned(signScore.getActivityId(), signScore.getUserId())) {
-            return 0; // 已签到
+            return 0; 
         }
         
-        // 2. 检查是否已报名并通过审核
         Registration registration = registrationMapper.selectByActivityAndUser(
             signScore.getActivityId(), signScore.getUserId());
         if (registration == null || !"通过".equals(registration.getAuditStatus())) {
-            return -1; // 未报名或未通过审核
+            return -1; 
         }
         
-        // 3. 设置默认积分
         if (signScore.getScore() == null) {
-            signScore.setScore(10);
+            signScore.setScore(10); //默认积分为10
         }
         
-        // 4. 使用存储过程签到
         int result = signScoreMapper.signByProcedure(
             signScore.getActivityId(), 
             signScore.getUserId(), 

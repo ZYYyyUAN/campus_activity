@@ -3,9 +3,6 @@ package com.campus.activity.common;
 import lombok.Data;
 import java.io.Serializable;
 
-/**
- * 统一响应结果类
- */
 @Data
 public class Result<T> implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -23,9 +20,6 @@ public class Result<T> implements Serializable {
         this.data = data;
     }
 
-    /**
-     * 成功响应
-     */
     public static <T> Result<T> success(T data) {
         return new Result<>(200, "操作成功", data);
     }
@@ -34,9 +28,6 @@ public class Result<T> implements Serializable {
         return new Result<>(200, message, data);
     }
 
-    /**
-     * 失败响应
-     */
     public static <T> Result<T> error(String message) {
         return new Result<>(500, message, null);
     }

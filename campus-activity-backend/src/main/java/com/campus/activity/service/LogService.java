@@ -19,6 +19,4 @@ public interface LogService {
     int addLog(Integer userId, String operationType, String operationContent);
     
     int deleteLog(Integer logId);
-    
-    int cleanExpiredLogs(Date beforeDate);
 }
