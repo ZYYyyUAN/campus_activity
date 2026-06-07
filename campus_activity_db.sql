@@ -1,4 +1,3 @@
-
 DROP DATABASE IF EXISTS campus_activity_db;
 CREATE DATABASE campus_activity_db
 DEFAULT CHARACTER SET utf8mb4
