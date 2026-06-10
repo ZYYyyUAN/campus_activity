@@ -10,9 +10,9 @@
       <el-form :inline="true" :model="searchForm" class="search-form">
         <el-form-item label="用户角色">
           <el-select v-model="searchForm.role" placeholder="请选择" clearable>
-            <el-option label="管理员" value="管理员"></el-option>
-            <el-option label="发布者" value="发布者"></el-option>
-            <el-option label="学生" value="学生"></el-option>
+            <el-option label="管理员" value="admin"></el-option>
+            <el-option label="发布者" value="publisher"></el-option>
+            <el-option label="学生" value="student"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -70,9 +70,9 @@
         </el-form-item>
         <el-form-item label="用户角色" prop="role">
           <el-select v-model="userForm.role" placeholder="请选择" style="width: 100%">
-            <el-option label="管理员" value="管理员"></el-option>
-            <el-option label="发布者" value="发布者"></el-option>
-            <el-option label="学生" value="学生"></el-option>
+            <el-option label="管理员" value="admin"></el-option>
+            <el-option label="发布者" value="publisher"></el-option>
+            <el-option label="学生" value="student"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="用户状态" prop="status">
@@ -263,9 +263,9 @@ export default {
     },
     getRoleType(role) {
       const roleMap = {
-        '管理员': 'danger',
-        '发布者': 'warning',
-        '学生': 'success'
+        'admin': 'danger',
+        'publisher': 'warning',
+        'student': 'success'
       }
       return roleMap[role] || 'info'
     },

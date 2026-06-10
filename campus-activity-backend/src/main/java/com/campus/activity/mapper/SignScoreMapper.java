@@ -4,6 +4,8 @@ import com.campus.activity.entity.SignScore;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
 import java.util.List;
 
 @Mapper
@@ -20,7 +22,7 @@ public interface SignScoreMapper {
     
     int insert(SignScore signScore);
     
-    @Select("CALL sign_and_add_score(#{activityId}, #{userId}, #{score})")
+    @Update("CALL sign_and_add_score(#{activityId}, #{userId}, #{score})")
     int signByProcedure(@Param("activityId") Integer activityId,
                         @Param("userId") Integer userId,
                         @Param("score") Integer score);

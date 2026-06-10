@@ -23,7 +23,7 @@ public interface ActivityService {
     
     int deleteActivity(Integer activityId);
     
-    boolean validateActivityTime(Date startTime, Date endTime);
+    boolean validateActivityTime(String startTimeStr, String endTimeStr);
     
     boolean checkActivityFull(Integer activityId);
 }

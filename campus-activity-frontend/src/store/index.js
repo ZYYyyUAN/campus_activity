@@ -40,8 +40,8 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    isAdmin: state => state.user && state.user.role === '管理员',
-    isPublisher: state => state.user && state.user.role === '发布者',
-    isStudent: state => state.user && state.user.role === '学生'
+    isAdmin: state => state.user && state.user.role === 'admin',
+    isPublisher: state => state.user && state.user.role === 'publisher',
+    isStudent: state => state.user && state.user.role === 'student'
   }
 })

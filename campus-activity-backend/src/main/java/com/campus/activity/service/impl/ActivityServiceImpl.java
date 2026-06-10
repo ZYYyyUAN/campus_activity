@@ -50,11 +50,17 @@ public class ActivityServiceImpl implements ActivityService {
     
     @Override
     public int addActivity(Activity activity) {
-        Date activityStartTime = activity.getStartTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date  activityStartTime= activity.getStartTime();
         Date activityEndTime = activity.getEndTime();
+        String activityStartTimeStr = sdf.format(activityStartTime);
+        String activityEndTimeStr = sdf.format(activityEndTime);
 
-        boolean isTimeValid = validateActivityTime(activityStartTime, activityEndTime);
+
+        boolean isTimeValid = validateActivityTime(activityStartTimeStr, activityEndTimeStr);
         if (!isTimeValid) {
+            System.out.println(activityStartTime);
+            System.out.println(activityEndTime);
             throw new RuntimeException("活动时间设置无效！");
         }
         
@@ -79,11 +85,16 @@ public class ActivityServiceImpl implements ActivityService {
     
     @Override
     public int updateActivity(Activity activity) {
-        Date activityStartTime = activity.getStartTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date  activityStartTime= activity.getStartTime();
         Date activityEndTime = activity.getEndTime();
+        String activityStartTimeStr = sdf.format(activityStartTime);
+        String activityEndTimeStr = sdf.format(activityEndTime);
 
-        boolean isTimeValid = validateActivityTime(activityStartTime, activityEndTime);
+        boolean isTimeValid = validateActivityTime(activityStartTimeStr, activityEndTimeStr);
         if (!isTimeValid) {
+            System.out.println(activityStartTime);
+            System.out.println(activityEndTime);
             throw new RuntimeException("活动时间设置无效！");
         }
         
@@ -100,12 +111,13 @@ public class ActivityServiceImpl implements ActivityService {
     }
     
     @Override
-    public boolean validateActivityTime(Date startTime, Date endTime) {
-        Date now = new Date();
-        if (startTime.before(now)) {
+    public boolean validateActivityTime(String startTimeStr, String endTimeStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String nowStr = sdf.format(new Date());
+        if (startTimeStr.compareTo(nowStr) < 0) {
             return false;
-        }
-        return endTime.after(startTime);
+        } 
+        return endTimeStr.compareTo(nowStr) > 0;
     }
     
     @Override

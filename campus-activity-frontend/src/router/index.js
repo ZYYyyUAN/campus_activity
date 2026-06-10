@@ -27,81 +27,81 @@ const routes = [
         path: 'activity',
         name: 'Activity',
         component: () => import('@/views/activity/ActivityList.vue'),
-        meta: { requiresAuth: true, roles: ['管理员', '发布者'] }
+        meta: { requiresAuth: true, roles: ['admin', 'publisher'] }
       },
       {
         path: 'activity/add',
         name: 'ActivityAdd',
         component: () => import('@/views/activity/ActivityForm.vue'),
-        meta: { requiresAuth: true, roles: ['管理员', '发布者'] }
+        meta: { requiresAuth: true, roles: ['admin', 'publisher'] }
       },
       {
         path: 'activity/edit/:id',
         name: 'ActivityEdit',
         component: () => import('@/views/activity/ActivityForm.vue'),
-        meta: { requiresAuth: true, roles: ['管理员', '发布者'] }
+        meta: { requiresAuth: true, roles: ['admin', 'publisher'] }
       },
       {
         path: 'activity/:id',
         name: 'ActivityDetail',
         component: () => import('@/views/activity/ActivityDetail.vue'),
-        meta: { requiresAuth: true, roles: ['管理员', '发布者'] }
+        meta: { requiresAuth: true, roles: ['admin', 'publisher'] }
       },
       {
         path: 'user',
         name: 'User',
         component: () => import('@/views/user/UserList.vue'),
-        meta: { requiresAuth: true, roles: ['管理员'] }
+        meta: { requiresAuth: true, roles: ['admin'] }
       },
       {
         path: 'log',
         name: 'Log',
         component: () => import('@/views/log/LogList.vue'),
-        meta: { requiresAuth: true, roles: ['管理员'] }
+        meta: { requiresAuth: true, roles: ['admin'] }
       },
       {
         path: 'evaluation',
         name: 'EvaluationList',
         component: () => import('@/views/evaluation/EvaluationList.vue'),
-        meta: { requiresAuth: true, roles: ['管理员'] }
+        meta: { requiresAuth: true, roles: ['admin'] }
       },
       // 发布者路由
       {
         path: 'publisher/audit',
         name: 'RegistrationAudit',
         component: () => import('@/views/publisher/RegistrationAudit.vue'),
-        meta: { requiresAuth: true, roles: ['发布者', '管理员'] }
+        meta: { requiresAuth: true, roles: ['publisher', 'admin'] }
       },
       {
         path: 'publisher/statistics',
         name: 'ActivityStatistics',
         component: () => import('@/views/publisher/ActivityStatistics.vue'),
-        meta: { requiresAuth: true, roles: ['发布者', '管理员'] }
+        meta: { requiresAuth: true, roles: ['publisher', 'admin'] }
       },
       // 学生路由
       {
         path: 'student/browse',
         name: 'ActivityBrowse',
         component: () => import('@/views/student/ActivityBrowse.vue'),
-        meta: { requiresAuth: true, roles: ['学生'] }
+        meta: { requiresAuth: true, roles: ['student'] }
       },
       {
         path: 'student/registration',
         name: 'MyRegistration',
         component: () => import('@/views/student/MyRegistration.vue'),
-        meta: { requiresAuth: true, roles: ['学生'] }
+        meta: { requiresAuth: true, roles: ['student'] }
       },
       {
         path: 'student/signscore',
         name: 'MySignScore',
         component: () => import('@/views/student/MySignScore.vue'),
-        meta: { requiresAuth: true, roles: ['学生'] }
+        meta: { requiresAuth: true, roles: ['student'] }
       },
       {
         path: 'student/evaluation/:activityId',
         name: 'EvaluationForm',
         component: () => import('@/views/student/EvaluationForm.vue'),
-        meta: { requiresAuth: true, roles: ['学生'] }
+        meta: { requiresAuth: true, roles: ['student'] }
       }
     ]
   }

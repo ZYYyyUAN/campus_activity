@@ -1,9 +1,9 @@
 package com.campus.activity.mapper;
 
 import com.campus.activity.entity.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.StatementType;
+
 import java.util.List;
 
 
@@ -28,6 +28,6 @@ public interface UserMapper {
 
     int updateStatus(@Param("userId") Integer userId, @Param("status") Integer status);
     
-    @Select("CALL reset_user_password(#{userId})")
+    @Update("CALL reset_user_password(#{userId})")
     int resetPasswordByProcedure(@Param("userId") Integer userId);
 }

@@ -4,6 +4,8 @@ import com.campus.activity.entity.Activity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
 import java.util.Date;
 import java.util.List;
 

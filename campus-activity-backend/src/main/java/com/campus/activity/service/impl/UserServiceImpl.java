@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int resetPassword(Integer userId) {
         // 调用存储过程重置密码
-        return userMapper.updatePassword(userId, "123456");
+        return userMapper.resetPasswordByProcedure(userId);
     }
     
     @Override
